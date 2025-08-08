@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>🤖 NeuroChat</title>
+    <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>💬 NeuroChat</h1>
+        </div>
+
+        <div class="chat-box" id="chatBox">
+            <div class="message bot">
+                <div class="avatar"></div>
+                Hello! I'm your AI assistant. Ask me anything.
+            </div>
+        </div>
+
+        <div class="typing" id="typingIndicator">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+
+        <div class="input-area">
+            <input type="text" id="userInput" placeholder="Ask me anything..." autofocus />
+            <button onclick="sendMessage()">Send</button>
+        </div>
+    </div>
+
+    <script>
+        const chatBox = document.getElementById("chatBox");
+        const userInput = document.getElementById("userInput");
+        const typingIndicator = document.getElementById("typingIndicator");
+
+        function addMessage(text, sender) {
+            const messageDiv = document.createElement("div");
+            messageDiv.className = `message ${sender}`;
+            messageDiv.innerHTML = `<div class="avatar"></div>${text}`;
+            chatBox.appendChild(messageDiv);
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        function showTyping() {
+            typingIndicator.style.display = "block";
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        function hideTyping() {
+            typingIndicator.style.display = "none";
+        }
+
+        async function sendMessage() {
+            const text = userInput.value.trim();
+            if (!text) return;
+
+            addMessage(text, "user");
+            userInput.value = "";
+            showTyping();
+
+            try {
+                const res = await fetch("/chat", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                    body: `query=${encodeURIComponent(text)}`
+                });
+                const data = await res.json();
+
+                setTimeout(() => {
+                    hideTyping();
+                    if (data.waiting_for_teaching) {
+                        addMessage("I don't know this. Teach me below.", "bot");
+                        const teachInput = document.createElement("div");
+                        teachInput.innerHTML = `
+                            <input type="text" id="teachInput" placeholder="Teach me a response..." style="width:100%; padding:10px; margin-top:5px; border-radius:8px; border:1px solid #ccc;">
+                            <button onclick="submitTeach('${encodeURIComponent(text)}')" style="margin-top:5px; padding:5px 10px;">Save</button>
+                        `;
+                        const wrapper = document.createElement("div");
+                        wrapper.appendChild(teachInput);
+                        chatBox.appendChild(wrapper);
+                        document.getElementById("teachInput").focus();
+                    } else {
+                        addMessage(data.response, "bot");
+                    }
+                    chatBox.scrollTop = chatBox.scrollHeight;
+                }, 600);
+            } catch (err) {
+                hideTyping();
+                addMessage("Oops! Something went wrong.", "bot");
+            }
+        }
+
+        function submitTeach(originalQuery) {
+            const input = document.getElementById("teachInput");
+            const response = input.value.trim();
+            if (!response) return;
+
+            fetch("/teach", {
+                method: "POST",
+                headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                body: `query=${originalQuery}&response=${encodeURIComponent(response)}`
+            }).then(() => {
+                const wrapper = input.closest("div").parentElement;
+                wrapper.innerHTML = `<div class="message bot"><div class="avatar"></div>Got it! I'll remember that.</div>`;
+                chatBox.scrollTop = chatBox.scrollHeight;
+            });
+        }
+
+        userInput.addEventListener("keypress", (e) => {
+            if (e.key === "Enter") sendMessage();
+        });
+    </script>
+</body>
+</html>

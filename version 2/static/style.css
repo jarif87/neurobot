@@ -1,0 +1,201 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background: #e0f7fa;
+    background: linear-gradient(135deg, #e0f7fa, #bbdefb);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    padding: 20px 0;
+}
+
+.container {
+    width: 90%;
+    max-width: 900px;
+    height: 90vh;
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-radius: 32px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.header {
+    padding: 20px;
+    text-align: center;
+    font-weight: 600;
+    font-size: 1.5em;
+    color: #01579b;
+    background: rgba(2, 128, 255, 0.15);
+    backdrop-filter: blur(6px);
+}
+
+.header h1 {
+    margin: 0;
+    font-weight: 600;
+    color: #0277bd;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+}
+
+.chat-box {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    scroll-behavior: smooth;
+    padding-left: 70px; /* Space for bot avatar */
+    padding-right: 70px;
+}
+
+.message {
+    max-width: 68%;
+    padding: 14px 18px;
+    border-radius: 28px; /* Ultra-rounded */
+    line-height: 1.55;
+    word-wrap: break-word;
+    position: relative;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    opacity: 0;
+    transform: translateY(10px);
+    animation: fadeIn 0.4s forwards;
+    font-size: 1em;
+}
+
+@keyframes fadeIn {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.bot {
+    align-self: flex-start;
+    background: linear-gradient(135deg, #a5d6a7, #c8e6c9);
+    color: #1b5e20;
+    border-bottom-left-radius: 8px;
+    padding-left: 28px;
+}
+
+.user {
+    align-self: flex-end;
+    background: linear-gradient(135deg, #64b5f6, #90caf9);
+    color: white;
+    border-bottom-right-radius: 8px;
+    padding-right: 28px;
+}
+
+/* Avatars */
+.avatar {
+    position: absolute;
+    top: -6px;
+    left: -50px;
+    width: 38px;
+    height: 38px;
+    background: #0277bd;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1em;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+    z-index: 10;
+}
+
+.user .avatar {
+    left: auto;
+    right: -50px;
+    background: #d81b60;
+}
+
+.bot .avatar::before {
+    content: "🤖";
+}
+
+.user .avatar::before {
+    content: "👤";
+}
+
+/* Typing Indicator */
+.typing {
+    display: none;
+    align-self: flex-start;
+    padding: 14px 18px;
+    max-width: 68%;
+    background: linear-gradient(135deg, #a5d6a7, #c8e6c9);
+    border-radius: 28px;
+    border-bottom-left-radius: 8px;
+    color: #1b5e20;
+    margin-left: 12px;
+    font-size: 1em;
+}
+
+.typing span {
+    height: 8px;
+    width: 8px;
+    background: #388e3c;
+    display: inline-block;
+    border-radius: 50%;
+    margin: 0 3px;
+    animation: typing 1.4s infinite;
+}
+
+.typing span:nth-child(2) { animation-delay: 0.2s; }
+.typing span:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes typing {
+    0%, 100% { transform: translateY(0); opacity: 0.8; }
+    50% { transform: translateY(-6px); opacity: 1; }
+}
+
+.input-area {
+    display: flex;
+    padding: 18px;
+    background: rgba(255, 255, 255, 0.6);
+    border-top: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+.input-area input {
+    flex: 1;
+    padding: 14px 20px;
+    border: none;
+    border-radius: 32px;
+    outline: none;
+    font-size: 1em;
+    font-family: 'Poppins', sans-serif;
+    background: rgba(255, 255, 255, 0.8);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(4px);
+}
+
+.input-area button {
+    margin-left: 12px;
+    padding: 0 24px;
+    background: #0277bd;
+    color: white;
+    border: none;
+    border-radius: 32px;
+    cursor: pointer;
+    font-weight: 500;
+    font-family: 'Poppins', sans-serif;
+    transition: 0.3s;
+    box-shadow: 0 4px 10px rgba(2, 119, 189, 0.3);
+}
+
+.input-area button:hover {
+    background: #01579b;
+    transform: translateY(-1px);
+}
