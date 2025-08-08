@@ -47,8 +47,7 @@ chatbot_app/
 
 ### 1. Clone the repo
 ```
-git clone https://github.com/your-username/neurobot-chatbot.git
-cd neurobot-chatbot
+git clone https://github.com/jarif87/neurobot.git
 ```
 ### 2. Install dependencies
 ```
@@ -98,3 +97,4 @@ In this upgraded version, the chatbot has evolved from a basic console-based ass
 🌐 FastAPI-Powered Backend: Clean, scalable, and responsive — built for real-world use.
 
 ```
+
