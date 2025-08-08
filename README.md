@@ -75,14 +75,14 @@ python-multipart
 ```
 pip install -r requirements.txt
 ```
+```
 🌟 Future Ideas
 ✅ Voice input (mic button)
 💾 Save chat history to localStorage
 📤 Export conversation as text
 🤖 Add bot "thinking" time simulation
 🔄 Teach the bot new responses
-
-
+```
 # 🚀 Chatbot App – Version 2: Smarter, Smoother, and More Beautiful
 ```
 In this upgraded version, the chatbot has evolved from a basic console-based assistant into a fully interactive web experience with a modern, eye-catching UI. Key improvements include:
@@ -96,4 +96,5 @@ In this upgraded version, the chatbot has evolved from a basic console-based ass
 🔁 Always Responds: Fixed logic to ensure the bot replies to every input — including "hi", offensive words, or unknown queries.
 💾 Permanent Learning: New knowledge is saved to data.csv, so the bot remembers what it learns across restarts.
 🌐 FastAPI-Powered Backend: Clean, scalable, and responsive — built for real-world use.
+
 ```
