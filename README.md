@@ -1,7 +1,7 @@
 # 💬 NeuroBot - AI Chatbot with Modern UI
 
-A sleek, responsive, and intelligent chatbot built with **FastAPI**, **Sentence Transformers**, and a **glassmorphic UI**.  
-NeuroBot understands natural queries, replies with context, and features a stunning dark/light mode interface with smooth animations.
+A sleek, responsive, and intelligent chatbot built with **FastAPI**, **Sentence Transformers** and a **glassmorphic UI**.  
+NeuroBot understands natural queries, replies with context and features a stunning dark/light mode interface with smooth animations.
 
 ![Chatbot Demo](images/image.png)  
 
@@ -75,9 +75,11 @@ python-multipart
 ```
 pip install -r requirements.txt
 ```
-🌟 Future Ideas
+### 🌟 Future Ideas
+```
 ✅ Voice input (mic button)
 💾 Save chat history to localStorage
 📤 Export conversation as text
 🤖 Add bot "thinking" time simulation
 🔄 Teach the bot new responses
+```
