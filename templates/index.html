@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>✨ AI ChatBot</title>
+    <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>💬 NeuroBot</h1>
+            <button class="mode-toggle" id="modeToggle">🌓</button>
+        </div>
+
+        <div class="chat-box" id="chatBox">
+            <div class="message bot">
+                <div class="avatar"></div>
+                Hello! I'm your AI assistant. How can I help?
+            </div>
+        </div>
+
+        <div class="typing" id="typingIndicator">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+
+        <div class="input-area">
+            <input type="text" id="userInput" placeholder="Ask me anything..." autofocus />
+            <button onclick="sendMessage()">Send</button>
+        </div>
+    </div>
+
+    <script>
+        const chatBox = document.getElementById("chatBox");
+        const userInput = document.getElementById("userInput");
+        const typingIndicator = document.getElementById("typingIndicator");
+        const modeToggle = document.getElementById("modeToggle");
+        const body = document.body;
+
+        // Dark mode toggle
+        modeToggle.addEventListener("click", () => {
+            body.classList.toggle("dark");
+            localStorage.setItem("darkMode", body.classList.contains("dark"));
+        });
+
+        // Load preference
+        if (localStorage.getItem("darkMode") === "true") {
+            body.classList.add("dark");
+        }
+
+        function addMessage(text, sender) {
+            const messageDiv = document.createElement("div");
+            messageDiv.className = `message ${sender}`;
+            messageDiv.innerHTML = `<div class="avatar"></div>${text}`;
+            chatBox.appendChild(messageDiv);
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        function showTyping() {
+            typingIndicator.style.display = "block";
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        function hideTyping() {
+            typingIndicator.style.display = "none";
+        }
+
+        async function sendMessage() {
+            const text = userInput.value.trim();
+            if (!text) return;
+
+            addMessage(text, "user");
+            userInput.value = "";
+            showTyping();
+
+            try {
+                const res = await fetch("/chat", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                    body: `query=${encodeURIComponent(text)}`
+                });
+                const data = await res.json();
+                
+                setTimeout(() => {
+                    hideTyping();
+                    addMessage(data.response, "bot");
+                }, 600);
+            } catch (err) {
+                hideTyping();
+                addMessage("Sorry, I couldn't connect.", "bot");
+            }
+        }
+
+        userInput.addEventListener("keypress", (e) => {
+            if (e.key === "Enter") sendMessage();
+        });
+    </script>
+</body>
+</html>
